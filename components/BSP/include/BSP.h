@@ -23,9 +23,6 @@
 #define BSP_H
 #pragma once
 
-#include "driver/gpio.h"	/* Se usa para recetear los GPIO. */
-
-
 /************************************************
 ENUMERACION PARA ACCESO A GPIO
  ************************************************/
@@ -80,8 +77,7 @@ DefiniciÓn de botones.
 #define BSP_BTN1 12		/*	BOTON 1 (GPIO12) */
 #define BSP_BTN2 34		/*	BOTON 1 (GPIO34) */
 
-#define BOARD_BUTTON_NORMAL_STATE_GPIO12 1
-#define BOARD_BUTTON_NORMAL_STATE_GPIO34 0
+#define BOARD_BTN_NORMAL_STATE_BTN2 0	// Estado normal del boton 2
 /************************************************
 Definición de led's plasmados en tarjeta.
 ************************************************/
@@ -95,5 +91,11 @@ Definición de led's plasmados en tarjeta.
 
 #define BSP_LED_H 0		/* Led encendido */
 #define BSP_LED_L 1		/* Led apagado   */
+
+/****************************************************
+Para configurar los GPIO como entrado o como salida
+****************************************************/
+#define GPIO_OUT 1
+#define GPIO_IN 0
 
 #endif	/* BSP_H_ */

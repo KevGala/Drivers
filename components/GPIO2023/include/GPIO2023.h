@@ -43,6 +43,11 @@ extern volatile uint32_t * const gpio_enable;
 extern volatile uint32_t * const gpio_enable1;
 extern volatile uint32_t * const gpio_in;
 extern volatile uint32_t * const gpio_in1;
+
+ // Registros IO_MUX_REG
+extern volatile uint32_t * const gpio15;
+extern volatile uint32_t * const gpio12;
+extern volatile uint32_t * const gpio34;
 /************************************************
 DECLARACIÓN DE MACROS.
  ************************************************/
@@ -64,9 +69,15 @@ DECLARACIÓN DE MACROS.
 /* Lee el estado del GPIO. */
 #define GPIO_GET_LEVEL_BIT(B)  *gpio_in & (int)pow((double)2,(double)B);	/* GPIO 0-31 */
 #define GPIO_GET_LEVEL_BIT1(B)  *gpio_in1 & (int)pow((double)2,(double)B);	/* GPIO 32-39 */
+
+/* Pone el nivel a un registro. */
+#define REG_SET_LEVEL(REG,B,L)	 if(L)	*REG |= (int)pow((double)2,(double)B); \
+								 else	*REG &= ~(int)pow((double)2,(double)B);
 /************************************************
     PROTOTIPO DE FUNCIONES
 ************************************************/
+/* Función para configurar GPIO. */
+extern void GPIO_CONFIG(gpio_n_t gpio_num,  uint8_t e);
 /* Función que establece un valor en un GPIO de salida. */
 extern void GPIO_SET_LEVEL(gpio_n_t gpio_num, uint32_t level);
 /* Función que retorna el valor de entrada de un GPIO. */
@@ -75,8 +86,15 @@ extern uint8_t GPIO_GET_LEVEL(gpio_n_t gpio_num);
 extern void GPIO_init_board(void);
 /* Función de parpadeo de todos los leds. */
 extern void LEDS_BLINK(void);
-
+/* Función para configurar los GPIO 12,15 y 34. */
+extern void gpio_reset_pinGpio(void);
 #endif
+
+
+
+
+
+
 
 
 

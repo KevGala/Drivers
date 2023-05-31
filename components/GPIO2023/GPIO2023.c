@@ -28,6 +28,26 @@ volatile uint32_t * const gpio_enable = (uint32_t*)0x3FF44020;
 volatile uint32_t * const gpio_enable1 = (uint32_t*)0x3FF4402C;
 volatile uint32_t * const gpio_in  = (uint32_t*)0x3FF4403C;
 volatile uint32_t * const gpio_in1  = (uint32_t*)0x3FF44040;
+
+
+volatile uint32_t * const gpio15  = (uint32_t*)0x3ff4903c;
+volatile uint32_t * const gpio12  = (uint32_t*)0x3ff49034;
+volatile uint32_t * const gpio34  = (uint32_t*)0x3ff49014;
+
+/*****************************************************************************
+ * Function: GPIO_CONFIG
+ * Preconditions: None.
+ * Overview: Función configurar los GPIO.
+ * Input: Número de GPIO, e = 1 salida, e = 0 entrada
+ * Output: None.
+ *
+ *****************************************************************************/
+void GPIO_CONFIG(gpio_n_t gpio_num,  uint8_t e)
+{
+	if(e) GPIO_ENABLE_OUTPUT_BIT(gpio_num)
+	else GPIO_DISABLE_OUTPUT_BIT(gpio_num)
+}
+
 /******************************************************************************
  * Function: GPIO_SET_LEVEL
  * Preconditions: Ninguna.
@@ -88,15 +108,10 @@ void GPIO_init_board(void)
 	GPIO_SET_LEVEL(BSP_LED3, BSP_LED_L);
 	GPIO_SET_LEVEL(BSP_LED4, BSP_LED_L);
 	GPIO_SET_LEVEL(BSP_LED5, BSP_LED_L);
-	/* Necesidta el reset para que funcine. */
-	gpio_reset_pin(BSP_LED6);
+	/* Necesidta el reset con los registros del IO_MUX. */
+	gpio_reset_pinGpio();
 	GPIO_ENABLE_OUTPUT_BIT(BSP_LED6)
 	GPIO_SET_LEVEL(BSP_LED6, BSP_LED_L);
-
-    /* Para los switches de la tarjeta (2). */
-	gpio_reset_pin(BSP_BTN1);
-	gpio_set_direction(BSP_BTN1, GPIO_MODE_INPUT);	/*	Lo coloca en pull-up. Puede funcionar si esto. */
-	gpio_set_direction(BSP_BTN2, GPIO_MODE_INPUT);	/*	Lo coloca en pull-down. */
 }
 /*****************************************************************************
  * Function: LEDS_BLINK
@@ -114,7 +129,35 @@ void LEDS_BLINK(void){
 	GPIO_SET_LEVEL_TOGGLE(BSP_LED4)
 	GPIO_SET_LEVEL_TOGGLE(BSP_LED5)
 }
+/*****************************************************************************
+ * Function: gpio_reset_pinGpio
+ * Preconditions: None.
+ * Overview: Función configurar con diferente los GPIO 12,15 y 34.
+ * Input: None.
+ * Output: None.
+ *
+ *****************************************************************************/
+void gpio_reset_pinGpio(void)
+{
+	/* LED6. */
+	REG_SET_LEVEL(gpio15,0,1) // MCU_OE Output enable of the pad in sleep mode. 1: enable output; 0: disable output. (R/W)
+	//MCU_SEL Select the IO_MUX function for this signal. 0 selects Function 0, 1 selects Function 1, etc.
+	REG_SET_LEVEL(gpio15,12,0)
+	REG_SET_LEVEL(gpio15,13,1)
+	REG_SET_LEVEL(gpio15,14,0)
 
+     /* Botones. */
+	REG_SET_LEVEL(gpio12,9,1) // FUN_IE Input enable of the pad. 1: input enabled; 0: input disabled. (R/W)
+    //MCU_SEL Select the IO_MUX function for this signal. 0 selects Function 0, 1 selects Function 1, etc.
+	REG_SET_LEVEL(gpio12,12,0)
+	REG_SET_LEVEL(gpio12,13,1)
+	REG_SET_LEVEL(gpio12,14,0)
 
+	REG_SET_LEVEL(gpio34,9,1) // FUN_IE Input enable of the pad. 1: input enabled; 0: input disabled. (R/W)
+	//MCU_SEL Select the IO_MUX function for this signal. 0 selects Function 0, 1 selects Function 1, etc.
+	REG_SET_LEVEL(gpio34,12,0)
+	REG_SET_LEVEL(gpio34,13,1)
+	REG_SET_LEVEL(gpio34,14,0)
+}
 
 

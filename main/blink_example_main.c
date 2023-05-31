@@ -24,13 +24,17 @@ static void blink_led(void)
 
 void app_main(void)
 {
-    GPIO_init_board();
+	GPIO_init_board();
 
-    while (1) {
-        blink_led();
-        /* Toggle the LED state */
-        s_led_state = !s_led_state;
+	GPIO_CONFIG(GPIO_N_14, GPIO_IN);
 
-        vTaskDelay(500 / portTICK_PERIOD_MS);
-    }
+	while (true) {
+		blink_led();
+
+		s_led_state = ~s_led_state;
+
+		GPIO_SET_LEVEL(BSP_LED4, GPIO_GET_LEVEL(GPIO_N_14) );
+
+		vTaskDelay(500 / portTICK_PERIOD_MS);
+	}
 }
