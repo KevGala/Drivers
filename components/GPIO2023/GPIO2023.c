@@ -56,7 +56,7 @@ void GPIO_CONFIG(gpio_n_t gpio_num,  uint8_t e)
  * Output: Ninguna.
  *
  *****************************************************************************/
-void GPIO_SET_LEVEL(gpio_n_t gpio_num, uint32_t level)
+void GPIO_SET_LEVEL(gpio_n_t gpio_num, uint8_t level)
 {
 	if(level) GPIO_SET_LEVEL_HIGH(gpio_num)	/* Pone en alto el gpio*/
 	else GPIO_SET_LEVEL_LOW(gpio_num) /* Pone en bajo el gpio */

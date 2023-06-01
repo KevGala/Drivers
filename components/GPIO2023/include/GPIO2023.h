@@ -78,7 +78,7 @@ DECLARACIÓN DE MACROS.
 /* Función para configurar GPIO. */
 extern void GPIO_CONFIG(gpio_n_t gpio_num,  uint8_t e);
 /* Función que establece un valor en un GPIO de salida. */
-extern void GPIO_SET_LEVEL(gpio_n_t gpio_num, uint32_t level);
+extern void GPIO_SET_LEVEL(gpio_n_t gpio_num, uint8_t level);
 /* Función que retorna el valor de entrada de un GPIO. */
 extern uint8_t GPIO_GET_LEVEL(gpio_n_t gpio_num);
 /* Función que inicializa el módulo GPIO. */
