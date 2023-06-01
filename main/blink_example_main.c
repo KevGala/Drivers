@@ -13,7 +13,7 @@
 
 #define BLINK_GPIO BSP_LED0
 
-static uint8_t s_led_state = 0;
+int s_led_state = 0;
 
 
 static void blink_led(void)
@@ -26,15 +26,16 @@ void app_main(void)
 {
 	GPIO_init_board();
 
-	GPIO_CONFIG(GPIO_N_14, GPIO_IN);
+	GPIO_CONFIG(GPIO_N_34, GPIO_IN);
 
-	while (true) {
+	while (1) {
 		blink_led();
 
 		s_led_state = ~s_led_state;
 
-		GPIO_SET_LEVEL(BSP_LED4, GPIO_GET_LEVEL(GPIO_N_14) );
+		GPIO_SET_LEVEL(BSP_LED4, GPIO_GET_LEVEL(GPIO_N_34) );
+		printf("hola\n");
 
-		vTaskDelay(500 / portTICK_PERIOD_MS);
+		vTaskDelay(500 / 10);
 	}
 }

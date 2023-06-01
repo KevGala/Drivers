@@ -1,6 +1,6 @@
 /*****************************************************
  * FileName:        GPIO2023.h
- * Dependencies:	BSP.h, stdint.h, stdio.h, stdbool.h, unistd.h, stdint.h, math.h
+ * Dependencies:	BSP.h, stdint.h, stdio.h, stdbool.h, unistd.h, math.h
  * Processor:       ESP32
  * Board:           ESP32
  * Program version: ECLIPSE IDE
@@ -28,7 +28,6 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <unistd.h>
-#include <stdint.h>
 #include <math.h>
 
 /* Board Support Package. */

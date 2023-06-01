@@ -5,7 +5,7 @@
  * Board:           ESP32
  * Program version: ECLIPSE IDE
  * Company:         TecNM /IT Chihuahua
- * Description:     PROTOTIPOS DE FUNCIONES DEL DRIVER
+ * Description:     FUNCIONES DEL DRIVER
  * Authors:         Kevin Galaviz, Wendy Marquez, Mario Marcial y Raul Rodirguez
  * Nota:
  *  Created on: Mayo 2023
