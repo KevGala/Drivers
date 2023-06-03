@@ -33,8 +33,3 @@ Función para inicializar la tarjeta con algunos valores específicos de una tar
 * LEDS_BLINK();  
 
 Función para hacer el parpadeo de LEDS  (GPIO_N_18, GPIO_N_5, GPIO_N_17, GPIO_N_16, GPIO_N_4, GPIO_N_2 Y GPIO_N_15).  No recibe ni regresa nada.
-
-## Función para configurar los GPIO 12, 15 y 34
-* gpio_reset_pinGpio();  
-
-Función para hacer el reset de los GPIO 12, 15 y 34. Y usarlos sin problemas. No recibe ni retorna nada.
