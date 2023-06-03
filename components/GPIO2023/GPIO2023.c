@@ -8,7 +8,7 @@
  * Description:     FUNCIONES DEL DRIVER
  * Authors:         Kevin Galaviz, Wendy Marquez, Mario Marcial y Raul Rodirguez
  * Nota:
- *  Created on: Mayo 2023
+ *  Created on: Junio 2023
  **************************************************/
 /************************************************************************************************
  * * Copyright (C) 2023 by Kevin Galaviz - TecNM /IT Chihuahua
@@ -28,12 +28,18 @@ volatile uint32_t * const gpio_enable = (uint32_t*)0x3FF44020;
 volatile uint32_t * const gpio_enable1 = (uint32_t*)0x3FF4402C;
 volatile uint32_t * const gpio_in  = (uint32_t*)0x3FF4403C;
 volatile uint32_t * const gpio_in1  = (uint32_t*)0x3FF44040;
-
-
-volatile uint32_t * const gpio15  = (uint32_t*)0x3ff4903c;
+// Registros IO_MUX_REG
 volatile uint32_t * const gpio12  = (uint32_t*)0x3ff49034;
+volatile uint32_t * const gpio13  = (uint32_t*)0x3ff49038;
+volatile uint32_t * const gpio14  = (uint32_t*)0x3FF49030;
+volatile uint32_t * const gpio15  = (uint32_t*)0x3ff4903c;
+volatile uint32_t * const gpio23  = (uint32_t*)0x3ff4908c;
+volatile uint32_t * const gpio25  = (uint32_t*)0x3FF49024;
+volatile uint32_t * const gpio26  = (uint32_t*)0x3ff49028;
+volatile uint32_t * const gpio32  = (uint32_t*)0x3FF4901C;
+volatile uint32_t * const gpio33  = (uint32_t*)0x3FF49020;
 volatile uint32_t * const gpio34  = (uint32_t*)0x3ff49014;
-
+volatile uint32_t * const gpio35  = (uint32_t*)0x3FF49018;
 /*****************************************************************************
  * Function: GPIO_CONFIG
  * Preconditions: None.
@@ -44,10 +50,45 @@ volatile uint32_t * const gpio34  = (uint32_t*)0x3ff49014;
  *****************************************************************************/
 void GPIO_CONFIG(gpio_n_t gpio_num,  uint8_t e)
 {
-	if(e) GPIO_ENABLE_OUTPUT_BIT(gpio_num)
-	else GPIO_DISABLE_OUTPUT_BIT(gpio_num)
-}
+	// Configuración de salida
+	if(e){
+		GPIO_ENABLE_OUTPUT_BIT(gpio_num)
 
+		switch ((int)gpio_num)
+		{
+			case 12: REG_CONFIG_OUT(gpio12) break;
+			case 13: REG_CONFIG_OUT(gpio13) break;
+			case 14: REG_CONFIG_OUT(gpio14) break;
+			case 15: REG_CONFIG_OUT(gpio15) break;
+			case 23: REG_CONFIG_OUT(gpio23) break;
+			case 25: REG_CONFIG_OUT(gpio25) break;
+			case 26: REG_CONFIG_OUT(gpio26) break;
+			case 32: REG_CONFIG_OUT(gpio32) break;
+			case 33: REG_CONFIG_OUT(gpio33) break;
+			case 34: REG_CONFIG_OUT(gpio34) break;
+			case 35: REG_CONFIG_OUT(gpio35) break;
+		}
+	}
+	// Configuaración de entrada
+	else{
+		GPIO_DISABLE_OUTPUT_BIT(gpio_num)
+
+		switch ((int)gpio_num)
+		{
+			case 12: REG_CONFIG_IN(gpio12) break;
+			case 13: REG_CONFIG_IN(gpio13) break;
+			case 14: REG_CONFIG_IN(gpio14) break;
+			case 15: REG_CONFIG_IN(gpio15) break;
+			case 23: REG_CONFIG_IN(gpio23) break;
+			case 25: REG_CONFIG_IN(gpio25) break;
+			case 26: REG_CONFIG_IN(gpio26) break;
+			case 32: REG_CONFIG_IN(gpio32) break;
+			case 33: REG_CONFIG_IN(gpio33) break;
+			case 34: REG_CONFIG_IN(gpio34) break;
+			case 35: REG_CONFIG_IN(gpio35) break;
+		}
+	}
+}
 /******************************************************************************
  * Function: GPIO_SET_LEVEL
  * Preconditions: Ninguna.
@@ -101,6 +142,7 @@ void GPIO_init_board(void)
 	GPIO_ENABLE_OUTPUT_BIT(BSP_LED3)
 	GPIO_ENABLE_OUTPUT_BIT(BSP_LED4)
 	GPIO_ENABLE_OUTPUT_BIT(BSP_LED5)
+	GPIO_CONFIG(BSP_LED6, GPIO_OUT);
 	/* Apagamos los led's. */
 	GPIO_SET_LEVEL(BSP_LED0, BSP_LED_L);
 	GPIO_SET_LEVEL(BSP_LED1, BSP_LED_L);
@@ -108,10 +150,10 @@ void GPIO_init_board(void)
 	GPIO_SET_LEVEL(BSP_LED3, BSP_LED_L);
 	GPIO_SET_LEVEL(BSP_LED4, BSP_LED_L);
 	GPIO_SET_LEVEL(BSP_LED5, BSP_LED_L);
-	/* Necesidta el reset con los registros del IO_MUX. */
-	gpio_reset_pinGpio();
-	GPIO_ENABLE_OUTPUT_BIT(BSP_LED6)
 	GPIO_SET_LEVEL(BSP_LED6, BSP_LED_L);
+	/* Para los botones de la tarjeta (2).*/
+	GPIO_CONFIG(BSP_BTN1, GPIO_IN);
+	GPIO_CONFIG(BSP_BTN2, GPIO_IN);
 }
 /*****************************************************************************
  * Function: LEDS_BLINK
@@ -129,35 +171,3 @@ void LEDS_BLINK(void){
 	GPIO_SET_LEVEL_TOGGLE(BSP_LED4)
 	GPIO_SET_LEVEL_TOGGLE(BSP_LED5)
 }
-/*****************************************************************************
- * Function: gpio_reset_pinGpio
- * Preconditions: None.
- * Overview: Función configurar con diferente los GPIO 12,15 y 34.
- * Input: None.
- * Output: None.
- *
- *****************************************************************************/
-void gpio_reset_pinGpio(void)
-{
-	/* LED6. */
-	REG_SET_LEVEL(gpio15,0,1) // MCU_OE Output enable of the pad in sleep mode. 1: enable output; 0: disable output. (R/W)
-	//MCU_SEL Select the IO_MUX function for this signal. 0 selects Function 0, 1 selects Function 1, etc.
-	REG_SET_LEVEL(gpio15,12,0)
-	REG_SET_LEVEL(gpio15,13,1)
-	REG_SET_LEVEL(gpio15,14,0)
-
-     /* Botones. */
-	REG_SET_LEVEL(gpio12,9,1) // FUN_IE Input enable of the pad. 1: input enabled; 0: input disabled. (R/W)
-    //MCU_SEL Select the IO_MUX function for this signal. 0 selects Function 0, 1 selects Function 1, etc.
-	REG_SET_LEVEL(gpio12,12,0)
-	REG_SET_LEVEL(gpio12,13,1)
-	REG_SET_LEVEL(gpio12,14,0)
-
-	REG_SET_LEVEL(gpio34,9,1) // FUN_IE Input enable of the pad. 1: input enabled; 0: input disabled. (R/W)
-	//MCU_SEL Select the IO_MUX function for this signal. 0 selects Function 0, 1 selects Function 1, etc.
-	REG_SET_LEVEL(gpio34,12,0)
-	REG_SET_LEVEL(gpio34,13,1)
-	REG_SET_LEVEL(gpio34,14,0)
-}
-
-

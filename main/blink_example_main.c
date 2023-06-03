@@ -11,7 +11,8 @@
 
 #include "GPIO2023.h"
 
-#define BLINK_GPIO BSP_LED0
+#define BLINK_GPIO 15
+#define GPIO_I 34
 
 int s_led_state = 0;
 
@@ -26,15 +27,11 @@ void app_main(void)
 {
 	GPIO_init_board();
 
-	GPIO_CONFIG(GPIO_N_34, GPIO_IN);
-
 	while (1) {
 		blink_led();
-
 		s_led_state = ~s_led_state;
 
-		GPIO_SET_LEVEL(BSP_LED4, GPIO_GET_LEVEL(GPIO_N_34) );
-		printf("hola\n");
+		printf("BTN = %d\n", GPIO_GET_LEVEL(GPIO_I));
 
 		vTaskDelay(500 / 10);
 	}

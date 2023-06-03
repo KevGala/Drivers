@@ -1,13 +1,13 @@
 /*****************************************************************************
  *  FileName:        BSP.h
- *  Dependencies:    driver/gpio.h
+ *  Dependencies:    Ninguna
  *  Processor:       ESP32
  *  Board:           ESP32
  *  Program version: Eclipse
  *  Company:         TecNM /IT Chihuahua
  *  Description:     Incluye la capa de abstraccion de los drivers.
  *  Authors:         Kevin Galaviz, Wendy Marquez, Mario Marcial y Raul Rodirguez
- *   Created on:     Mayo 2023
+ *   Created on:     Junio 2023
  *   Updated:
   **/
 /************************************************************************************************

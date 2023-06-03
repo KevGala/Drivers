@@ -8,7 +8,7 @@
  * Description:     PROTOTIPOS DE FUNCIONES DEL DRIVER
  * Authors:         Kevin Galaviz, Wendy Marquez, Mario Marcial y Raul Rodirguez
  * Nota:
- *  Created on: Mayo 2023
+ *  Created on: Junio 2023
  **************************************************/
 /************************************************************************************************
  * * Copyright (C) 2023 by Kevin Galaviz - TecNM /IT Chihuahua
@@ -42,11 +42,18 @@ extern volatile uint32_t * const gpio_enable;
 extern volatile uint32_t * const gpio_enable1;
 extern volatile uint32_t * const gpio_in;
 extern volatile uint32_t * const gpio_in1;
-
- // Registros IO_MUX_REG
-extern volatile uint32_t * const gpio15;
+// Registros IO_MUX_REG
 extern volatile uint32_t * const gpio12;
+extern volatile uint32_t * const gpio13;
+extern volatile uint32_t * const gpio14;
+extern volatile uint32_t * const gpio15;
+extern volatile uint32_t * const gpio23;
+extern volatile uint32_t * const gpio25;
+extern volatile uint32_t * const gpio26;
+extern volatile uint32_t * const gpio32;
+extern volatile uint32_t * const gpio33;
 extern volatile uint32_t * const gpio34;
+extern volatile uint32_t * const gpio35;
 /************************************************
 DECLARACIÓN DE MACROS.
  ************************************************/
@@ -72,6 +79,18 @@ DECLARACIÓN DE MACROS.
 /* Pone el nivel a un registro. */
 #define REG_SET_LEVEL(REG,B,L)	 if(L)	*REG |= (int)pow((double)2,(double)B); \
 								 else	*REG &= ~(int)pow((double)2,(double)B);
+
+/* Configura con IO_MUX_REG una entrada */
+#define REG_CONFIG_OUT(G)	/* MCU_OE Output enable of the pad in sleep mode. 1: enable output; 0: disable output. (R/W) */	REG_SET_LEVEL(G,0,1)  \
+/* MCU_SEL Select the IO_MUX function for this signal. 0 selects Function 0, 1 selects Function 1, etc. */	REG_SET_LEVEL(G,12,0) \
+																											REG_SET_LEVEL(G,13,1) \
+																											REG_SET_LEVEL(G,14,0);
+/* Configura con IO_MUX_REG una salida */
+#define REG_CONFIG_IN(G)	/* MCU_OE Output enable of the pad in sleep mode. 1: enable output; 0: disable output. (R/W) */	REG_SET_LEVEL(G,9,1)  \
+/* MCU_SEL Select the IO_MUX function for this signal. 0 selects Function 0, 1 selects Function 1, etc. */	REG_SET_LEVEL(G,12,0) \
+																											REG_SET_LEVEL(G,13,1) \
+																											REG_SET_LEVEL(G,14,0);
+
 /************************************************
     PROTOTIPO DE FUNCIONES
 ************************************************/
@@ -85,8 +104,6 @@ extern uint8_t GPIO_GET_LEVEL(gpio_n_t gpio_num);
 extern void GPIO_init_board(void);
 /* Función de parpadeo de todos los leds. */
 extern void LEDS_BLINK(void);
-/* Función para configurar los GPIO 12,15 y 34. */
-extern void gpio_reset_pinGpio(void);
 #endif
 
 
