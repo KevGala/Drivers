@@ -6,7 +6,7 @@
  * Program version: ECLIPSE IDE
  * Company:         TecNM /IT Chihuahua
  * Description:     PROTOTIPOS DE FUNCIONES DEL DRIVER
- * Authors:         Kevin Galaviz, Wendy Marquez, Mario Marcial y Raul Rodirguez
+ * Authors:         Kevin Galaviz, Wendy Marquez, Mario Marcial y Raul Rodriguez
  * Nota:
  *  Created on: Junio 2023
  **************************************************/

@@ -6,7 +6,7 @@
  * Program version: ECLIPSE IDE
  * Company:         TecNM /IT Chihuahua
  * Description:     Ejemplo de parpadeo de un LED y la lectura de un boton.
- * Authors:         Kevin Galaviz, Wendy Marquez, Mario Marcial y Raul Rodirguez
+ * Authors:         Kevin Galaviz, Wendy Marquez, Mario Marcial y Raul Rodriguez
  * Nota:
  *  Created on: Junio 2023
  **************************************************/

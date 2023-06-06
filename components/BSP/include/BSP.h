@@ -6,7 +6,7 @@
  *  Program version: Eclipse
  *  Company:         TecNM /IT Chihuahua
  *  Description:     Incluye la capa de abstraccion de los drivers.
- *  Authors:         Kevin Galaviz, Wendy Marquez, Mario Marcial y Raul Rodirguez
+ *  Authors:         Kevin Galaviz, Wendy Marquez, Mario Marcial y Raul Rodriguez
  *   Created on:     Junio 2023
  *   Updated:
   **/
