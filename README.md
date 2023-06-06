@@ -1,77 +1,34 @@
-| Supported Targets | ESP32 | ESP32-C2 | ESP32-C3 | ESP32-C6 | ESP32-H2 | ESP32-S2 | ESP32-S3 |
-| ----------------- | ----- | -------- | -------- | -------- | -------- | -------- | -------- |
+# Drivers
 
-# Blink Example
+| Tarjeta soportada | ESP32 | 
+| ----------------- | ----- | 
 
-(See the README.md file in the upper level 'examples' directory for more information about examples.)
+# Ejemplo parpadeo de un LED y lectura de un GPIO
 
-This example demonstrates how to blink a LED using GPIO or using the [led_strip](https://components.espressif.com/component/espressif/led_strip) component for the addressable LED, i.e. [WS2812](https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf).
+Este ejemplo funciona para hacer el parpadeo de un led y la lectura del estado de un GPIO. Esto haciendo uso de los drivers creados, de los cuales puedes hacer uso simplemente copiando la carpeta de componentes en tus proyectos o usando este proyecto y modificando. El componente BSP es usado para tener una estructura de los pines de la esp32, además de tener algunas definiciones para el uso de una tarjeta específica. Y por último el componente GPIO2023 es el que cuenta con todas las funciones que se presentarán a continuación. 
 
-The `led_strip` is installed via [component manager](main/idf_component.yml).
 
-## How to Use Example
+## Función para configurar GPIO
+* GPIO_CONFIG(gpio_n_t gpio_num,  uint8_t e);     
 
-Before project configuration and build, be sure to set the correct chip target using `idf.py set-target <chip_name>`.
+Recibe el número del GPIO a configurar y un valor de tipo entero, 1 para configurar como salida y 0 para configurar como entrada. No regresa nada.
 
-### Hardware Required
+## Función que establece un valor en un GPIO de salida
+* GPIO_SET_LEVEL(gpio_n_t gpio_num, uint8_t level);  
 
-* A development board with Espressif SoC (e.g., ESP32-DevKitC, ESP-WROVER-KIT, etc.)
-* A USB cable for Power supply and programming
+Recibe el número del GPIO y el estado que se quiere poner alto o bajo. No regresa nada.
 
-Some development boards use an addressable LED instead of a regular one. These development boards include:
+## Función que retorna el valor de entrada de un GPIO
+* GPIO_GET_LEVEL(gpio_n_t gpio_num);  
 
-| Board                | LED type             | Pin                  |
-| -------------------- | -------------------- | -------------------- |
-| ESP32-C3-DevKitC-1   | Addressable          | GPIO8                |
-| ESP32-C3-DevKitM-1   | Addressable          | GPIO8                |
-| ESP32-S2-DevKitM-1   | Addressable          | GPIO18               |
-| ESP32-S2-Saola-1     | Addressable          | GPIO18               |
-| ESP32-S3-DevKitC-1   | Addressable          | GPIO48               |
+Función para leer un GPIO. Recibe el número del GPIO y retorna el valor leído.
 
-See [Development Boards](https://www.espressif.com/en/products/devkits) for more information about it.
+## Función que inicializa el módulo GPIO
+* GPIO_init_board(void);  
 
-### Configure the Project
+Función para inicializar la tarjeta con algunos valores específicos de una tarjeta, no hace falta usarla. No recibe ni regresa nada.
 
-Open the project configuration menu (`idf.py menuconfig`).
+## Función de parpadeo de todos los LEDS
+* LEDS_BLINK();  
 
-In the `Example Configuration` menu:
-
-* Select the LED type in the `Blink LED type` option.
-  * Use `GPIO` for regular LED blink.
-* Set the GPIO number used for the signal in the `Blink GPIO number` option.
-* Set the blinking period in the `Blink period in ms` option.
-
-### Build and Flash
-
-Run `idf.py -p PORT flash monitor` to build, flash and monitor the project.
-
-(To exit the serial monitor, type ``Ctrl-]``.)
-
-See the [Getting Started Guide](https://docs.espressif.com/projects/esp-idf/en/latest/get-started/index.html) for full steps to configure and use ESP-IDF to build projects.
-
-## Example Output
-
-As you run the example, you will see the LED blinking, according to the previously defined period. For the addressable LED, you can also change the LED color by setting the `led_strip_set_pixel(led_strip, 0, 16, 16, 16);` (LED Strip, Pixel Number, Red, Green, Blue) with values from 0 to 255 in the [source file](main/blink_example_main.c).
-
-```text
-I (315) example: Example configured to blink addressable LED!
-I (325) example: Turning the LED OFF!
-I (1325) example: Turning the LED ON!
-I (2325) example: Turning the LED OFF!
-I (3325) example: Turning the LED ON!
-I (4325) example: Turning the LED OFF!
-I (5325) example: Turning the LED ON!
-I (6325) example: Turning the LED OFF!
-I (7325) example: Turning the LED ON!
-I (8325) example: Turning the LED OFF!
-```
-
-Note: The color order could be different according to the LED model.
-
-The pixel number indicates the pixel position in the LED strip. For a single LED, use 0.
-
-## Troubleshooting
-
-* If the LED isn't blinking, check the GPIO or the LED type selection in the `Example Configuration` menu.
-
-For any technical queries, please open an [issue](https://github.com/espressif/esp-idf/issues) on GitHub. We will get back to you soon.
+Función para hacer el parpadeo de LEDS  (GPIO_N_18, GPIO_N_5, GPIO_N_17, GPIO_N_16, GPIO_N_4, GPIO_N_2 Y GPIO_N_15).  No recibe ni regresa nada.
